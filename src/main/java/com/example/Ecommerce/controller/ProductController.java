@@ -2,7 +2,9 @@ package com.example.Ecommerce.controller;
 
 
 import com.example.Ecommerce.dto.ProductDto;
+import com.example.Ecommerce.exceptions.ProductNotExitsException;
 import com.example.Ecommerce.service.ProductService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +26,15 @@ public class ProductController {
         return productList;
     }
 
+
     @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable Long id){
-        ProductDto product = productService.getProductById(id);
+        ProductDto product = null;
+        try {
+            product = productService.getProductById(id);
+        } catch (ProductNotExitsException e) {
+            throw new RuntimeException(e);
+        }
         return product;
     }
 
@@ -50,13 +58,23 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable Long id,@RequestBody ProductDto productRequest){
-        ResponseEntity<Object> response = productService.updateProduct(id, productRequest);
+        ResponseEntity<Object> response = null;
+        try {
+            response = productService.updateProduct(id, productRequest);
+        } catch (ProductNotExitsException e) {
+            throw new RuntimeException(e);
+        }
         return response;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteProduct(@PathVariable Long id){
-        ResponseEntity<Object> response = productService.deleteProduct(id);
+    public ResponseEntity<Object> deleteProduct(@PathVariable Long id)  {
+        ResponseEntity<Object> response = null;
+        try {
+            response = productService.deleteProduct(id);
+        } catch (ProductNotExitsException e) {
+            throw new RuntimeException(e);
+        }
         return response;
     }
 
