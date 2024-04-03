@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -33,6 +34,9 @@ public class Product {
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnoreProperties
     private Set<Category> categories;
+
+    @OneToMany(mappedBy = "orderItems", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
 
     public Set<Category> getCategories(){
         return categories != null ? categories : Collections.emptySet();
