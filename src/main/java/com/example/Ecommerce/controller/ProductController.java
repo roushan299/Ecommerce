@@ -2,6 +2,7 @@ package com.example.Ecommerce.controller;
 
 
 import com.example.Ecommerce.dto.ProductDto;
+import com.example.Ecommerce.exceptions.NoCategoryExitsException;
 import com.example.Ecommerce.exceptions.ProductNotExitsException;
 import com.example.Ecommerce.service.ProductService;
 import lombok.SneakyThrows;
@@ -40,13 +41,23 @@ public class ProductController {
 
     @GetMapping("/{categoryId}")
     public List<ProductDto> getProductByCategoryId(@PathVariable Long categoryId){
-        List<ProductDto> productList = productService.getProductByCategoryId(categoryId);
+        List<ProductDto> productList = null;
+        try {
+            productList = productService.getProductByCategoryId(categoryId);
+        } catch (NoCategoryExitsException e) {
+            throw new RuntimeException(e);
+        }
         return productList;
     }
 
     @GetMapping("/{categoryName}")
     public List<ProductDto> getProductByCategoryName(@PathVariable String categoryName){
-        List<ProductDto> productList = productService.getProductByCategoryName(categoryName);
+        List<ProductDto> productList = null;
+        try {
+            productList = productService.getProductByCategoryName(categoryName);
+        } catch (NoCategoryExitsException e) {
+            throw new RuntimeException(e);
+        }
         return productList;
     }
 
