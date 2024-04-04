@@ -39,7 +39,7 @@ public class ProductController {
         return product;
     }
 
-    @GetMapping("/{categoryId}")
+    @GetMapping("/categoryId/{categoryId}")
     public List<ProductDto> getProductByCategoryId(@PathVariable Long categoryId){
         List<ProductDto> productList = null;
         try {
@@ -50,7 +50,7 @@ public class ProductController {
         return productList;
     }
 
-    @GetMapping("/{categoryName}")
+    @GetMapping("/categoryName/{categoryName}")
     public List<ProductDto> getProductByCategoryName(@PathVariable String categoryName){
         List<ProductDto> productList = null;
         try {

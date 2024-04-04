@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "order")
+@Table(name = "orders")
 @Entity
 public class Order {
 
@@ -23,7 +23,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private transient User user;
 
     private BigDecimal totalPrice;
 

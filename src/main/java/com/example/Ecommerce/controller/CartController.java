@@ -22,8 +22,8 @@ public class CartController {
         return response;
     }
 
-    @GetMapping("/get")
-    public ResponseEntity getCartById(@RequestHeader("userId") Long userId){
+    @GetMapping("/get/{userId}")
+    public ResponseEntity getCartById(@PathVariable("userId") Long userId){
         Cart cart = null;
         try {
             cart = cartService.getCartById(userId);

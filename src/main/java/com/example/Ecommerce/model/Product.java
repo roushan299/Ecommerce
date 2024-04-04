@@ -35,9 +35,11 @@ public class Product {
     @JsonIgnoreProperties
     private Set<Category> categories;
 
-    @OneToMany(mappedBy = "orderItems", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems;
     public Set<Category> getCategories(){
         return categories != null ? categories : Collections.emptySet();
     }

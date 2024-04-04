@@ -48,7 +48,7 @@ public class CategoryService {
     public Category getCategoryByName(String name) throws NoCategoryExitsException {
         Optional<Category> optionalCategory = categoryRepository.findByName(name);
         if(optionalCategory.isEmpty()){
-            throw new NoCategoryExitsException("No category exits with id: "+name);
+            throw new NoCategoryExitsException("No category exits with Name: "+name);
         }
         Category category = optionalCategory.get();
         return category;

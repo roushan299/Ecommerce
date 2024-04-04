@@ -24,7 +24,7 @@ public class CartItemService {
     ProductService productService;
 
 
-    public CartItem addCartItem(Cart cart , CartItemRequest cartItemRequest) throws ProductNotExitsException {
+    public CartItem addCartItem(Cart cart, CartItemRequest cartItemRequest) throws ProductNotExitsException {
 
             Product product = productService.getProductByIdForInternal(cartItemRequest.getProductId());
             BigDecimal price = BigDecimal.valueOf(product.getPrice() * cartItemRequest.getQuantity());
