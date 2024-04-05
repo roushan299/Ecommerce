@@ -1,6 +1,8 @@
-package com.example.Ecommerce.controller;
+ package com.example.Ecommerce.controller;
 
 import com.example.Ecommerce.dto.AddressDto;
+import com.example.Ecommerce.exceptions.NoAddressExitsException;
+import com.example.Ecommerce.exceptions.UserNotExitException;
 import com.example.Ecommerce.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +25,23 @@ public class AddressController {
 
     @GetMapping("/get/{id}")
     public AddressDto getAddressById(@PathVariable Long id) {
-        AddressDto address = addressService.getAddressById(id);
+        AddressDto address = null;
+        try {
+            address = addressService.getAddressById(id);
+        } catch (NoAddressExitsException e) {
+            throw new RuntimeException(e);
+        }
         return address;
     }
 
-
     @PostMapping
     public ResponseEntity<Object> createAddress(@RequestBody AddressDto addressRequest) {
-        ResponseEntity<Object> response = addressService.createAddress(addressRequest);
+        ResponseEntity<Object> response = null;
+        try {
+            response = addressService.createAddress(addressRequest);
+        } catch (UserNotExitException e) {
+            throw new RuntimeException(e);
+        }
         return response;
     }
 
