@@ -27,30 +27,37 @@ public class CartService {
     @Autowired
     CartItemService cartItemService;
 
+    @Autowired
+    UserService userService;
+
 
     public ResponseEntity<Object> createNewCart(CartItemRequest cartItemRequest) {
         ResponseEntity<Object> response = null;
         Long userId = cartItemRequest.getUserId();
-        try {
-            //check if cart exits or not
-            Cart cart = getCartById(userId);
-            cartItemRequest.setCartId(cart.getId());
-        } catch (NoCartExitsException e) {
-            // if not create cart and then add cartItem to the cart
-            List<CartItem> items = new ArrayList<>();
-            BigDecimal totalPrice = new BigDecimal(0);
+        Boolean isUserExits = userService.exitsUserByUserId(userId);
+        if (isUserExits) {
+            try {
+                //check if cart exits or not
+                Cart cart = getCartById(userId);
+                cartItemRequest.setCartId(cart.getId());
+            } catch (NoCartExitsException e) {
+                // if not create cart and then add cartItem to the cart
+                List<CartItem> items = new ArrayList<>();
+                BigDecimal totalPrice = new BigDecimal(0);
 
-            Cart cart = Cart.builder()
-                    .userId(userId)
-                    .totalPrice(totalPrice)
-                    .items(items)
-                    .build();
+                Cart cart = Cart.builder()
+                        .userId(userId)
+                        .totalPrice(totalPrice)
+                        .items(items)
+                        .build();
 
-            cart = cartRepository.save(cart);
-            cartItemRequest.setCartId(cart.getId());
+                cart = cartRepository.save(cart);
+                cartItemRequest.setCartId(cart.getId());
+            }
+            response = updateCartWithCartItem(userId, cartItemRequest);
+            return response;
         }
-        response = updateCartWithCartItem(userId, cartItemRequest);
-        return  response;
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     public Cart getCartById(Long id) throws NoCartExitsException {

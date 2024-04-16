@@ -39,8 +39,8 @@ public class ProductController {
         return product;
     }
 
-    @GetMapping("/categoryId/{categoryId}")
-    public List<ProductDto> getProductByCategoryId(@PathVariable Long categoryId){
+    @GetMapping("/byCategory")
+    public List<ProductDto> getProductByCategoryId(@RequestParam("categoryId") Long categoryId){
         List<ProductDto> productList = null;
         try {
             productList = productService.getProductByCategoryId(categoryId);
@@ -50,8 +50,8 @@ public class ProductController {
         return productList;
     }
 
-    @GetMapping("/categoryName/{categoryName}")
-    public List<ProductDto> getProductByCategoryName(@PathVariable String categoryName){
+    @GetMapping("/byCategoryName")
+    public List<ProductDto> getProductByCategoryName(@RequestParam("categoryName") String categoryName){
         List<ProductDto> productList = null;
         try {
             productList = productService.getProductByCategoryName(categoryName);

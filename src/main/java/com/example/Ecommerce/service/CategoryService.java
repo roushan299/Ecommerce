@@ -20,18 +20,18 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public Set<Category> saveCategoriesAndUpdateInSet(Set<Category> categories) {
-        Set<Category> newCategories = new HashSet<Category>();
-        for(Category category: categories){
-            String categoryName = category.getName();
+    public Set<Category> saveCategoriesAndUpdateInSet(List<String> categories) {
+        Set<Category> newCategories = new HashSet<>();
+        for(String categoryName: categories){
             Optional<Category> optionalCategory = categoryRepository.findByName(categoryName);
             if(optionalCategory.isPresent()){
-                category = optionalCategory.get();
+               Category category = optionalCategory.get();
+                newCategories.add(category);
             }else {
+                Category category = Category.builder().name(categoryName).build();
                 category = categoryRepository.save(category);
-
+                newCategories.add(category);
             }
-            newCategories.add(category);
         }
         return newCategories;
     }
@@ -74,10 +74,6 @@ public class CategoryService {
         return categoryList.stream().map(this::mapStringToCategory).collect(Collectors.toList());
     }
 
-    private String mapStringToCategory(Category category) {
-        return category.getName();
-    }
-
     public ResponseEntity<Object> deleteCategory(Long id) {
         ResponseEntity<Object> response;
         try {
@@ -102,4 +98,16 @@ public class CategoryService {
         }
         return response;
     }
+    private String mapStringToCategory(Category category) {
+        return category.getName();
+    }
+
+    public List<String> getCategoryByKeyword(String keyword) {
+        List<Category> categoryList = categoryRepository.findCategoriesByNameKeyword(keyword);
+        if(categoryList.isEmpty()){
+
+        }
+        return categoryList.stream().map(this::mapStringToCategory).collect(Collectors.toList());
+    }
+
 }

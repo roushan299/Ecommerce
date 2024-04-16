@@ -1,4 +1,4 @@
 package com.example.Ecommerce.dto;
 
-public class ProductResponse {
+public class OrderDto {
 }

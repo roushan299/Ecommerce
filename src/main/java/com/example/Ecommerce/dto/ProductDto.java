@@ -5,6 +5,7 @@ import com.example.Ecommerce.model.Category;
 import lombok.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -17,9 +18,9 @@ public class ProductDto {
     private String name;
     private double price;
     private String description;
-    private Set<Category> categories;
-    public Set<Category> getCategories(){
-        return categories != null ? categories : Collections.emptySet();
+    private List<String> categories;
+    public List<String> getCategories(){
+        return categories != null ? categories : Collections.emptyList();
     }
 
 

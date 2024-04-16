@@ -17,8 +17,8 @@ public class AddressController {
     @Autowired
     AddressService addressService;
 
-    @GetMapping("/geUserByuserId/{userId}")
-    public List<AddressDto> getAllAddressByUserId(@PathVariable Long userId) {
+    @GetMapping("/get")
+    public List<AddressDto> getAllAddressByUserId(@RequestParam("userId") Long userId) {
         List<AddressDto> addressList = addressService.getAllAddressByUserId(userId);
         return addressList;
     }
@@ -45,14 +45,14 @@ public class AddressController {
         return response;
     }
 
-    @PutMapping("/upadte/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Object> updateAddress(@PathVariable("id") Long id, @RequestBody AddressDto addressRequest) {
         ResponseEntity<Object> response = addressService.updateAddress(id, addressRequest);
         return response;
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteAddress(@PathVariable("id") Long id, @RequestBody AddressDto addressRequest) {
+    public ResponseEntity<Object> deleteAddress(@PathVariable("id") Long id) {
         ResponseEntity<Object> response = addressService.deleteAddress(id);
         return response;
     }

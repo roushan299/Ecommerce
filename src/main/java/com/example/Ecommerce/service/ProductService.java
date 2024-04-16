@@ -1,16 +1,13 @@
 package com.example.Ecommerce.service;
 
-
 import com.example.Ecommerce.dto.ProductDto;
 import com.example.Ecommerce.exceptions.NoCategoryExitsException;
 import com.example.Ecommerce.exceptions.ProductNotExitsException;
 import com.example.Ecommerce.model.Category;
 import com.example.Ecommerce.model.Product;
-import com.example.Ecommerce.repository.CategoryRepository;
 import com.example.Ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -42,20 +39,30 @@ public class ProductService {
     public List<ProductDto> getProductByCategoryId(Long categoryId) throws NoCategoryExitsException {
         //check categoryExits
         Category category = categoryService.getCategoryById(categoryId);
-        List<Product> productList = setToListConverter(category.getProducts());
-        return productList.stream().map(this::mapProductToProductDto).collect(Collectors.toList());
+        String categoryName = category.getName();
+        return getProductByCategoryName(categoryName);
     }
 
     public List<ProductDto> getProductByCategoryName(String categoryName) throws NoCategoryExitsException {
-        Category category = categoryService.getCategoryByName(categoryName);
-        List<Product> productList = setToListConverter(category.getProducts());
+        //Category category = categoryService.getCategoryByName(categoryName);
+        List<Product> allProductList = productRepository.findAll();
+        List<Product> productList = new ArrayList<>();
+        for(Product product : allProductList) {
+            Set<Category> categories = product.getCategories();
+            for(Category category : categories) {
+             if(category.getName().equalsIgnoreCase(categoryName)) {
+                 productList.add(product);
+             }
+            }
+        }
+
         return productList.stream().map(this::mapProductToProductDto).collect(Collectors.toList());
     }
 
     public ResponseEntity<Object> createProduct(ProductDto productRequest) {
             //check product already exits or not
-        Set<Category> categories = productRequest.getCategories();
-        categories = categoryService.saveCategoriesAndUpdateInSet(categories);
+        List<String> categoriesOfDto = productRequest.getCategories();
+        Set<Category> categories = categoryService.saveCategoriesAndUpdateInSet(categoriesOfDto);
         Product product = Product.builder()
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
@@ -100,11 +107,11 @@ public class ProductService {
         return productDto;
     }
 
-    private List<Product> setToListConverter(Set<Product> productSet){
-        List<Product> productList = new ArrayList<>();
-        productSet.addAll(productSet);
-        return productList;
-    }
+//    private List<Product> setToListConverter(Set<Product> productSet){
+//        List<Product> productList = new ArrayList<>();
+//        productSet.addAll(productSet);
+//        return productList;
+//    }
 
     public Product getProductByIdForInternal(Long id) throws ProductNotExitsException {
         Optional<Product> optionalProduct = productRepository.findById(id);
