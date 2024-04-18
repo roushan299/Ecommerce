@@ -29,4 +29,13 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartItem> items;
 
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", totalPrice=" + totalPrice +
+//                ", items=" + items +
+                '}';
+    }
 }

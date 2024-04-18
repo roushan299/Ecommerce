@@ -28,11 +28,14 @@ public class CartItemService {
 
             Product product = productService.getProductByIdForInternal(cartItemRequest.getProductId());
             BigDecimal price = BigDecimal.valueOf(product.getPrice() * cartItemRequest.getQuantity());
+            int quantity = Math.toIntExact(cartItemRequest.getQuantity());
 
             CartItem cartItem = CartItem.builder()
                     .product(product)
                     .price(price)
                     .cart(cart)
+                    .quantity(quantity)
+
                     .build();
 
             cartItem = cartItemRepository.save(cartItem);

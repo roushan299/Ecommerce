@@ -1,6 +1,7 @@
 package com.example.Ecommerce.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,11 +37,27 @@ public class Product {
     private Set<Category> categories;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<OrderItem> orderItems;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<CartItem> cartItems;
+
     public Set<Category> getCategories(){
         return categories != null ? categories : Collections.emptySet();
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+//                ", categories=" + categories +
+//                ", orderItems=" + orderItems +
+//                ", cartItems=" + cartItems +
+                '}';
     }
 }

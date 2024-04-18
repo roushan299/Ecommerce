@@ -96,17 +96,21 @@ public class CartService {
         try {
             Cart cart = getCartById(userId);
             List<CartItem> cartItemList = cart.getItems();
+            List<CartItem> updatedCartItemList = new ArrayList<>();
 
             for(CartItem cartItem: cartItemList){
                 if(cartItem.getId()==cartItemId){
                     CartItem exitingCartItem = cartItemService.deleteCartItemById(cartItemId);
-                    boolean isCartItemDeletedFromCart = cartItemList.remove(cartItem);
-                    if(isCartItemDeletedFromCart){
+//                    boolean isCartItemDeletedFromCart = cartItemList.remove(cartItem);
+//                    if(isCartItemDeletedFromCart){
                         BigDecimal totalPrice = cart.getTotalPrice().subtract(exitingCartItem.getPrice());
                         cart.setTotalPrice(totalPrice);
-                    }
+//                    }
+                }else{
+                   updatedCartItemList.add(cartItem);
                 }
             }
+            cart.setItems(updatedCartItemList);
             cartRepository.save(cart);
             response = new ResponseEntity<>("Item is deleted from the cart", HttpStatus.OK);
             return response;

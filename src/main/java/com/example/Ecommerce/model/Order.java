@@ -31,4 +31,13 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", user=" + user +
+                ", totalPrice=" + totalPrice +
+//                ", orderItems=" + orderItems +
+                '}';
+    }
 }

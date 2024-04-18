@@ -32,4 +32,14 @@ public class OrderItem {
 
     private BigDecimal price;
 
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", order=" + order +
+                ", product=" + product +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                '}';
+    }
 }

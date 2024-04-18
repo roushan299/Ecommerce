@@ -16,8 +16,8 @@ public class CartController {
     CartService cartService;
 
     @PostMapping("/add")
-    public ResponseEntity<Object> addToCart(@RequestBody CartItemRequest cartItemRequest, @RequestHeader("userId") Long userId){
-        cartItemRequest.setUserId(userId);
+    public ResponseEntity<Object> addToCart(@RequestBody CartItemRequest cartItemRequest){
+        //cartItemRequest.setUserId(cartItemRequest.getUserId());
         ResponseEntity<Object> response = cartService.createNewCart(cartItemRequest);
         return response;
     }
@@ -40,7 +40,7 @@ public class CartController {
     }
 
     @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<Object> deleteCartItemFromCart(@PathVariable Long userId,@RequestHeader Long cartItemId){
+    public ResponseEntity<Object> deleteCartItemFromCart(@PathVariable Long userId,@RequestParam("cartItemId") Long cartItemId){
         ResponseEntity<Object> response = cartService.deleteCartItemFromCart(userId, cartItemId);
         return response;
     }
